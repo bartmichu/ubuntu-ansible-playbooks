@@ -1,0 +1,20 @@
+---
+# reboot-panic tasks main file
+
+- name: Template sysctl file
+  become: true
+  template:
+    src: sysctl.j2
+    dest: /etc/sysctl.d/reboot-panic.conf
+    force: yes
+    backup: false
+    owner: root
+    group: root
+    mode: "0644"
+  register: panic_reboot_template
+
+- name: Reload sysctl settings
+  become: true
+  when: panic_reboot_template.changed and ansible_virtualization_type != "lxc"
+  command: sysctl -p /etc/sysctl.d/reboot-panic.conf
+  changed_when: false

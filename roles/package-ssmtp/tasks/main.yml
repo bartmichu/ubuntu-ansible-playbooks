@@ -1,0 +1,37 @@
+---
+# package-ssmtp tasks main file
+
+- name: Explicitly update repositories cache
+  become: true
+  apt:
+    force_apt_get: yes
+    update_cache: yes
+
+- name: Install packages
+  become: true
+  apt:
+    name:
+      - ssmtp
+      - mailutils
+
+- name: Template config file
+  become: true
+  template:
+    src: ssmtp.conf.j2
+    dest: /etc/ssmtp/ssmtp.conf
+    force: yes
+    backup: true
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Template aliases file
+  become: true
+  template:
+    src: revaliases.j2
+    dest: /etc/ssmtp/revaliases
+    force: yes
+    backup: true
+    owner: root
+    group: root
+    mode: "0600"

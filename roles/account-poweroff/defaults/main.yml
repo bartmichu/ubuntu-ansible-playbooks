@@ -1,0 +1,6 @@
+---
+# account-poweroff defaults main file
+
+poweroff_account: "poweroff-account"
+public_key_file: "~/.ssh/poweroff-account.pub"
+trusted_ip: "*"

@@ -1,0 +1,52 @@
+---
+# account-poweroff tasks main file
+
+#
+# ssh-keygen -t rsa -f ~/.ssh/poweroff-account
+#
+
+- name: Add dedicated user account
+  become: true
+  user:
+    name: "{{ poweroff_account }}"
+    shell: /bin/bash
+    password: "{{ lookup('password', '/dev/null length=20') | string | password_hash('sha512') }}"
+  register: account_result
+
+- name: Set up authorized key
+  when: account_result.changed
+  become: true
+  authorized_key:
+    user: "{{ poweroff_account}}"
+    exclusive: yes
+    state: present
+    key: "{{ lookup('file', public_key_file) }}"
+    key_options: 'no-port-forwarding,no-x11-forwarding,no-agent-forwarding,no-pty,command="/usr/bin/sudo /usr/bin/systemctl --ignore-inhibitors --no-wall poweroff"'
+
+- name: Template sudoers file
+  when: account_result.changed
+  become: true
+  template:
+    src: sudoers.j2
+    dest: /etc/sudoers.d/poweroff-account
+    force: yes
+    backup: false
+    owner: root
+    group: root
+    mode: "0440"
+    validate: /usr/sbin/visudo -cf %s
+
+- name: Template config file and restart OpenSSH server
+  when: account_result.changed
+  become: true
+  template:
+    src: sshd.j2
+    dest: /etc/ssh/sshd_config.d/poweroff-account.conf
+    force: yes
+    backup: false
+    owner: root
+    group: root
+    mode: "0640"
+    validate: /usr/sbin/sshd -t -f %s
+  notify:
+    - restart sshd

@@ -1,0 +1,5 @@
+---
+# panic-reboot vars main file
+
+# must be >= 1 to work properly
+reboot_timeout: 30

@@ -1,0 +1,6 @@
+- name: Ubuntu Ansible Playbooks
+  hosts: all
+  gather_facts: true
+
+  roles:
+    # - 

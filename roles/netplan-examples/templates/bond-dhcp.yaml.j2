@@ -1,0 +1,21 @@
+## DO NOT EDIT. This file is Ansible managed and will be overwritten
+##
+
+## Use netplan-try to test new configuration
+
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eports:
+      match:
+        name: xxx*
+      optional: true
+  bonds:
+    bond0:
+      interfaces: [eports]
+      dhcp4: true
+      #nameservers:
+      #  addresses: [{{ dns_servers }}]
+      parameters:
+        mode: balance-tlb

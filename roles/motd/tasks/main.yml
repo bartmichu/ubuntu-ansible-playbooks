@@ -1,0 +1,26 @@
+---
+# motd tasks main file
+
+- name: Disable unneeded MOTD fragments
+  become: true
+  file:
+    path: "{{ item }}"
+    mode: a-x
+  loop:
+    - /etc/update-motd.d/10-help-text
+    - /etc/update-motd.d/50-motd-news
+
+- name: Disable motd-news service
+  become: true
+  lineinfile:
+    path: /etc/default/motd-news
+    create: no
+    regexp: "^ENABLED="
+    line: ENABLED=0
+
+- name: Disable motd-news service
+  become: true
+  service:
+    name: motd-news
+    enabled: no
+    state: stopped

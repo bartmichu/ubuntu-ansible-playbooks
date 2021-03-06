@@ -1,0 +1,26 @@
+---
+# package-apcupsd tasks main file
+
+- name: Explicitly update repositories cache
+  become: true
+  apt:
+    force_apt_get: yes
+    update_cache: yes
+
+- name: Install package
+  become: true
+  apt:
+    name:
+      - apcupsd
+
+- name: Copy config file
+  become: true
+  copy:
+    src: apcupsd.conf
+    dest: /etc/apcupsd/apcupsd.conf
+    force: yes
+    backup: true
+    owner: root
+    group: root
+    mode: "0644"
+  

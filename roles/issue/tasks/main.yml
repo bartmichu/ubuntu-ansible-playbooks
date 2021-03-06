@@ -1,0 +1,15 @@
+---
+# issue tasks main file
+
+- name: Template issue files
+  become: true
+  template:
+    src: issue.j2
+    dest: /etc/{{ item }}
+    force: yes
+    owner: root
+    group: root
+    mode: "0644"
+  loop:
+    - issue
+    - issue.net

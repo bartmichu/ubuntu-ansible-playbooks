@@ -1,0 +1,26 @@
+---
+# package-smartmontools tasks main file
+
+- name: Explicitly update repositories cache
+  become: true
+  apt:
+    force_apt_get: yes
+    update_cache: yes
+
+- name: Install package
+  become: true
+  apt:
+    name:
+      - smartmontools
+
+- name: Template config file
+  become: true
+  template:
+    src: smartd.j2
+    dest: /etc/smartd.conf
+    force: yes
+    backup: true
+    owner: root
+    group: root
+    mode: "0644"
+  

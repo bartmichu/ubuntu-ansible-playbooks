@@ -1,0 +1,4 @@
+---
+# timedate defaults main file
+
+timedate_timezone: "Europe/Warsaw"
