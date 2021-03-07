@@ -1,0 +1,33 @@
+#
+# ssh-keygen -t rsa -f ~/.ssh/node
+# ansible-playbook -i "ubuntu@10.0.0.1," -k -K -e "pubkey=~/.ssh/node.pub target=ubuntu@10.0.0.1" account-ansible.yaml
+#
+
+- name: Prepare node for Ansible management
+  hosts: "{{ target }}"
+  become: yes
+  gather_facts: no
+
+  vars:
+    public_key_file: "{{ pubkey }}"
+
+  vars_prompt:
+    - name: new_account_name
+      default: "ansible"
+      prompt: "Enter Ansible account name"
+      private: no
+
+    - name: new_account_password
+      default: "{{ lookup('password', '/dev/null length=20') }}"
+      prompt: "Enter Ansible account password"
+      private: yes
+      unsafe: yes
+
+    - name: trusted_ip
+      default: "*"
+      prompt: "Enter trusted IP address for SSH"
+      private: no
+
+  roles:
+    - account-ansible
+  

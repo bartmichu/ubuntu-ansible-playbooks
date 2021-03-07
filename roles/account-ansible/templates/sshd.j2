@@ -1,0 +1,8 @@
+## DO NOT EDIT. This file is Ansible managed and will be overwritten
+##
+
+Match User {{ new_account_name }}
+  AllowUsers *@{{ trusted_ip }}
+  AuthenticationMethods publickey
+  PasswordAuthentication no
+  Banner none

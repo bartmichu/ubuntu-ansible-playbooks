@@ -1,0 +1,8 @@
+---
+# account-ansible handlers main file
+
+- name: restart sshd
+  become: true
+  service:
+    name: sshd
+    state: restarted

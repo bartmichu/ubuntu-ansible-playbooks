@@ -1,0 +1,33 @@
+---
+# account-ansible tasks main file
+
+- name: Add system account for Ansible
+  user:
+    name: "{{ new_account_name }}"
+    shell: /bin/bash
+    password: "{{ new_account_password | string | password_hash('sha512') }}"
+    groups: sudo
+    append: yes
+  register: account_result
+
+- name: Set up authorized key for Ansible account
+  when: account_result.changed
+  authorized_key:
+    user: "{{ new_account_name}}"
+    exclusive: yes
+    state: present
+    key: "{{ lookup('file', public_key_file) }}"
+  register: pubkey_result
+
+- name: Template config file and restart OpenSSH server
+  template:
+    src: sshd.j2
+    dest: /etc/ssh/sshd_config.d/account-ansible.conf
+    force: yes
+    backup: false
+    owner: root
+    group: root
+    mode: "0640"
+    validate: /usr/sbin/sshd -t -f %s
+  notify:
+    - restart sshd
