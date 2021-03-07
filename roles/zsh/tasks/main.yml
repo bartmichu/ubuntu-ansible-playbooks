@@ -1,0 +1,57 @@
+---
+# zsh tasks main file
+
+- name: Get users info
+  getent:
+    database: passwd
+
+- name: Create existing users list
+  set_fact:
+    users_existing: "{{ getent_passwd.keys() | list }}"
+
+- name: Explicitly update repositories cache
+  become: true
+  apt:
+    force_apt_get: yes
+    update_cache: yes
+
+- name: Install packages
+  become: true
+  apt:
+    name:
+      - zsh
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+      - zsh-theme-powerlevel9k
+
+- name: Copy global config file
+  become: true
+  copy:
+    src: zshrc_global
+    dest: /etc/zsh/zshrc
+    force: yes
+    backup: false
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Copy local config file
+  when: (item in users_existing) and (item != "root")
+  become: true
+  copy:
+    src: zshrc_local
+    dest: "/home/{{ item }}/.zshrc"
+    force: no
+    backup: false
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: "0640"
+  loop: "{{ zsh_users }}"
+
+- name: Set default shell for selected users
+  when: (item in users_existing) and (item != "root")
+  become: true
+  user:
+    name: "{{ item }}"
+    shell: /usr/bin/zsh
+  loop: "{{ zsh_users }}"

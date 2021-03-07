@@ -1,0 +1,39 @@
+---
+# zabbix-agent-userparams tasks main file
+
+- name: Copy my custom userparam files
+  become: true
+  copy:
+    src: "{{ item }}"
+    dest: /etc/zabbix/zabbix_agentd.d/ansible_{{ item }}
+    force: yes
+    backup: false
+    owner: root
+    group: root
+    mode: "0644"
+  loop:
+    [
+      needrestart.conf,
+      ubuntu-reboot-required.conf,
+      ubuntu-updates.conf,
+      urbackup-client.conf,
+      urbackup-server.conf,
+      zfs-checks.conf,
+    ]
+
+- name: Copy my custom sudoers files
+  become: true
+  copy:
+    src: "{{ item }}"
+    dest: /etc/sudoers.d/ansible_{{ item }}
+    force: yes
+    backup: false
+    owner: root
+    group: root
+    mode: "0440"
+  loop: [sudoers_zabbix_needrestart]
+
+- name: Restart zabbix-agent
+  service:
+    name: zabbix-agent
+    state: restarted

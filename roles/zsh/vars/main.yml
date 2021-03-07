@@ -1,0 +1,6 @@
+---
+# zsh vars main file
+
+zsh_users: [
+  ubuntu
+]

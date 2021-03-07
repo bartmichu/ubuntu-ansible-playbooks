@@ -1,0 +1,16 @@
+---
+# common-packages vars main file
+
+common_packages:
+  [
+    bash-completion,
+    debsums,
+    gpm,
+    htop,
+    iftop,
+    libpam-systemd,
+    needrestart,
+    tmux,
+    unattended-upgrades,
+    update-notifier-common
+  ]

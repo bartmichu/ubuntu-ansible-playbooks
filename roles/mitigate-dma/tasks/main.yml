@@ -1,0 +1,33 @@
+---
+# mitigate-dma tasks main file
+
+- name: Blacklist unwanted kernel modules
+  become: true
+  template:
+    src: "blacklist.j2"
+    dest: /etc/modprobe.d/blacklist-dma.ansible.conf
+    force: yes
+    backup: no
+    owner: root
+    group: root
+    mode: "0644"
+  register: dma_mitigate_blacklist
+
+- name: Disable unwanted kernel modules
+  become: true
+  template:
+    src: "disable.j2"
+    dest: "/etc/modprobe.d/{{ item }}.conf"
+    force: yes
+    backup: yes
+    owner: root
+    group: root
+    mode: "0644"
+  loop: "{{ unwanted_modules }}"
+  register: dma_mitigate_disable
+
+- name: Update initramfs
+  when: dma_mitigate_blacklist.changed or dma_mitigate_disable.changed
+  become: true
+  command: update-initramfs -u
+  changed_when: false

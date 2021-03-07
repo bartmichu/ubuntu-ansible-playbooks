@@ -1,0 +1,53 @@
+---
+# zabbix-agent-smartmontools tasks main file
+
+#
+# <https://github.com/v-zhuravlev/zbx-smartctl>
+#
+
+- name: Copy userparam files
+  become: true
+  copy:
+    src: "{{ item }}"
+    dest: /etc/zabbix/zabbix_agentd.d/ansible_{{ item }}
+    force: yes
+    backup: false
+    owner: root
+    group: root
+    mode: "0644"
+  loop: [zabbix_smartctl.conf]
+
+- name: Copy sudoers files
+  become: true
+  copy:
+    src: "{{ item }}"
+    dest: /etc/sudoers.d/ansible_{{ item }}
+    force: yes
+    backup: false
+    owner: root
+    group: root
+    mode: "0440"
+  loop: [sudoers_zabbix_smartctl]
+
+- name: Create scripts directory
+  become: true
+  file:
+    path: /etc/zabbix/scripts
+    state: directory
+
+- name: Copy discovery script files
+  become: true
+  copy:
+    src: "{{ item }}"
+    dest: /etc/zabbix/scripts/ansible_{{ item }}
+    force: yes
+    backup: false
+    owner: zabbix
+    group: zabbix
+    mode: "0744"
+  loop: [smartctl-disks-discovery.pl]
+
+- name: Restart zabbix-agent
+  service:
+    name: zabbix-agent
+    state: restarted

@@ -1,0 +1,15 @@
+---
+# common-packages tasks mail file
+
+- name: Explicitly update repositories cache
+  become: true
+  apt:
+    force_apt_get: yes
+    update_cache: yes
+
+- name: Install packages
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ common_packages }}"
