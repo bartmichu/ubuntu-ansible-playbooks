@@ -1,0 +1,10 @@
+#
+# ssh-keygen -t rsa -f ~/.ssh/poweroff-account
+#
+
+- name: Configure poweroff account
+  hosts: all
+  gather_facts: false
+
+  roles:
+    - account-poweroff

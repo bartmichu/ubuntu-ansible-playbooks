@@ -1,10 +1,6 @@
 ---
 # account-poweroff tasks main file
 
-#
-# ssh-keygen -t rsa -f ~/.ssh/poweroff-account
-#
-
 - name: Add dedicated user account
   become: true
   user:
