@@ -1,0 +1,46 @@
+---
+# system-reboot tasks main file
+
+- name: Check if a system reboot is required
+  become: false
+  stat:
+    path: /var/run/reboot-required
+    get_md5: no
+  register: reboot_required_sentinel
+
+- name: Check which packages require a system reboot
+  when: reboot_required_sentinel.stat.exists
+  become: false
+  slurp:
+    src: /var/run/reboot-required.pkgs
+  register: reboot_required_packages
+
+- name: Set host facts
+  become: false
+  set_fact:
+    reboot_required_status: "{{ 'pending' if reboot_required_sentinel.stat.exists else 'not needed' }}"
+
+- name: Announce pending reboot
+  when: reboot_required_sentinel.stat.exists
+  become: false
+  debug:
+    msg: "System reboot is {{ reboot_required_status }}."
+
+- name: Reboot system
+  when: reboot_system and reboot_required_sentinel.stat.exists
+  become: true
+  reboot:
+    post_reboot_delay: 0
+  register: reboot_required_result
+
+- name: Update host facts
+  when: reboot_required_result.changed
+  become: false
+  set_fact:
+    reboot_required_status: "{{ 'successfull' if reboot_required_result.rebooted == true else 'failed' }}"
+
+- name: Confirm system reboot
+  when: reboot_required_result.changed and reboot_required_result.rebooted == true
+  become: false
+  debug:
+    msg: "System was successfully rebooted"

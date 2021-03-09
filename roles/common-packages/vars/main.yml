@@ -8,8 +8,6 @@ common_packages:
     gpm,
     htop,
     iftop,
-    libpam-systemd,
-    needrestart,
     tmux,
     unattended-upgrades,
     update-notifier-common

@@ -1,0 +1,4 @@
+---
+# system-reboot defaults main file
+
+reboot_system: false

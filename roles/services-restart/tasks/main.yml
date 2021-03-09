@@ -1,0 +1,54 @@
+---
+# services-restart tasks main file
+
+- name: Check which services need to be restarted
+  become: true
+  shell: /usr/sbin/needrestart -b -l -r l | /usr/bin/awk '/^NEEDRESTART-SVC/{print $2}'
+  changed_when: false
+  register: services_before_restart
+
+- name: Set host facts
+  become: false
+  set_fact:
+    needrestart_before_restart: "{{ (services_before_restart.stdout_lines | default('')) | list }}"
+
+- name: List services that need to be restarted
+  when: needrestart_before_restart | length > 0
+  become: false
+  debug:
+    msg: "{{ needrestart_before_restart | length }} services to restart ({{ needrestart_before_restart | join(', ') }})"
+
+- name: Automatically restart services
+  when: restart_services and (needrestart_before_restart | length > 0)
+  become: true
+  shell: /usr/sbin/needrestart -l -r a
+
+- name: Check which services still need to be restarted
+  when: restart_services and (needrestart_before_restart | length > 0)
+  become: true
+  shell: /usr/sbin/needrestart -b -l -r l | /usr/bin/awk '/^NEEDRESTART-SVC/{print $2}'
+  changed_when: false
+  register: services_after_restart
+
+- name: Set host facts
+  when: restart_services
+  become: false
+  set_fact:
+    needrestart_after_restart: "{{ (services_after_restart.stdout_lines | default('')) | list }}"
+
+- name: List services that were not automatically restarted
+  when: restart_services and (needrestart_after_restart | length > 0)
+  become: false
+  debug:
+    msg: "{{ needrestart_after_restart | length }} services still to restart ({{ needrestart_after_restart | join(', ') }})"
+
+- name: Set host facts
+  become: false
+  set_fact:
+    needrestart_summary: "{{ ((needrestart_before_restart | length) - (needrestart_after_restart | length)) if restart_services else 0 }} out of {{ needrestart_before_restart | length }} restarted."
+
+- name: Print a summary
+  when: needrestart_before_restart | length > 0
+  become: false
+  debug:
+    msg: "{{ needrestart_summary }}"

@@ -1,0 +1,15 @@
+- name: Ubuntu system update playbook
+  hosts: all
+  gather_facts: true
+
+  roles:
+    - packages-upgrade
+    - package-needrestart
+    - services-restart
+    - system-reboot
+
+  tasks:
+    - name: Print system update summary
+      become: true
+      debug:
+        msg: "Packages: {{ packages_upgrade_summary }} Services: {{ needrestart_summary }} Reboot: {{ reboot_required_status }}."

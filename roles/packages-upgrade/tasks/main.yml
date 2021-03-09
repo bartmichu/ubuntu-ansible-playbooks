@@ -1,0 +1,26 @@
+---
+# packages-upgrade tasks main file
+
+- name: Explicitly update repositories cache
+  become: true
+  apt:
+    force_apt_get: yes
+    update_cache: yes
+
+- name: Upgrade all installed packages
+  become: true
+  apt:
+    force_apt_get: yes
+    upgrade: "yes"
+  register: packages_upgrade_result
+
+- name: Set host facts
+  become: false
+  set_fact:
+    packages_upgrade_summary: "{{ (packages_upgrade_result.stdout_lines | select('search', 'upgraded,'))[0] }}"
+
+- name: Print a summary
+  when: packages_upgrade_result.changed
+  become: false
+  debug:
+    msg: "{{ packages_upgrade_summary }}"
