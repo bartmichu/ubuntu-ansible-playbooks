@@ -1,0 +1,7 @@
+- name: Restart services
+  hosts: all
+  gather_facts: true
+
+  roles:
+    - package-needrestart
+    - services-restart
