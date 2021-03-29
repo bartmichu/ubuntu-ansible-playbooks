@@ -17,7 +17,7 @@
 
 - name: Set host facts
   become: false
-  set_fact:
+  ansible.builtin.set_fact:
     reboot_required_status: "{{ 'pending' if reboot_required_sentinel.stat.exists else 'not needed' }}"
 
 - name: Announce pending reboot
@@ -36,7 +36,7 @@
 - name: Update host facts
   when: reboot_required_result.changed
   become: false
-  set_fact:
+  ansible.builtin.set_fact:
     reboot_required_status: "{{ 'successfull' if reboot_required_result.rebooted == true else 'failed' }}"
 
 - name: Confirm system reboot

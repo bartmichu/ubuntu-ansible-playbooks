@@ -6,7 +6,7 @@
     database: passwd
 
 - name: Create existing users list
-  set_fact:
+  ansible.builtin.set_fact:
     users_existing: "{{ getent_passwd.keys() | list }}"
 
 - name: Explicitly update repositories cache

@@ -16,7 +16,7 @@
 
 - name: Set host facts
   become: false
-  set_fact:
+  ansible.builtin.set_fact:
     packages_upgrade_summary: "{{ (packages_upgrade_result.stdout_lines | select('search', 'upgraded,'))[0] }}"
 
 - name: Print a summary
