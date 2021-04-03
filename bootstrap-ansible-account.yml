@@ -1,6 +1,6 @@
 #
 # ssh-keygen -t rsa -f ~/.ssh/node
-# ansible-playbook -i "ubuntu@10.0.0.1," -k -K -e "pubkey=~/.ssh/node.pub target=ubuntu@10.0.0.1" account-ansible.yaml
+# ansible-playbook -k -K -i "ubuntu@10.0.0.1," -e "pubkey=~/.ssh/node.pub target=ubuntu@10.0.0.1" bootstrap-ansible-account.yaml
 #
 
 - name: Prepare node for Ansible management
