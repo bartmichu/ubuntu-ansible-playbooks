@@ -2,7 +2,7 @@
 # ssh-keygen -t rsa -f ~/.ssh/poweroff-account
 #
 
-- name: Add dedicated account to power-off the machine
+- name: Add and configure dedicated account to power-off the machine
   hosts: all
   gather_facts: false
 
