@@ -1,8 +1,5 @@
 ## DO NOT EDIT. This file is Ansible managed and will be overwritten
 ##
 
-# Place this file in /etc/sudoers.d/ directory.
-# All files in this directory should be mode 0440.
-#
-
+# Allow dedicated user account to power-off the machine
 {{ poweroff_account }} ALL=NOPASSWD: /usr/bin/systemctl --ignore-inhibitors --no-wall poweroff

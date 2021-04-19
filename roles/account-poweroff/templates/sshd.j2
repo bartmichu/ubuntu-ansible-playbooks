@@ -2,7 +2,7 @@
 ##
 
 Match User {{ poweroff_account }}
-  AllowUsers *@{{ trusted_ip }}
+  AllowUsers *@{{ poweroff_ip }}
   AuthenticationMethods publickey
   PasswordAuthentication no
   Banner none

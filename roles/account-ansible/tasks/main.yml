@@ -1,8 +1,8 @@
 ---
 # account-ansible tasks main file
 
-- name: Add system account for Ansible
-  user:
+- name: Add system account
+  ansible.builtin.user:
     name: "{{ new_account_name }}"
     shell: /bin/bash
     password: "{{ new_account_password | string | password_hash('sha512') }}"
@@ -10,17 +10,17 @@
     append: yes
   register: account_result
 
-- name: Set up authorized key for Ansible account
+- name: Set up authorized key
   when: account_result.changed
-  authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ new_account_name}}"
     exclusive: yes
     state: present
     key: "{{ lookup('file', public_key_file) }}"
   register: pubkey_result
 
-- name: Template config file and restart OpenSSH server
-  template:
+- name: Configure and restart SSH server
+  ansible.builtin.template:
     src: sshd.j2
     dest: /etc/ssh/sshd_config.d/account-ansible.conf
     force: yes

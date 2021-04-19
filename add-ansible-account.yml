@@ -1,9 +1,9 @@
 #
 # ssh-keygen -t rsa -f ~/.ssh/node
-# ansible-playbook -k -K -i "ubuntu@10.0.0.1," -e "pubkey=~/.ssh/node.pub target=ubuntu@10.0.0.1" bootstrap-ansible-account.yaml
+# ansible-playbook -k -K -i "ubuntu@10.0.0.1," -e "pubkey=~/.ssh/node.pub target=ubuntu@10.0.0.1" add-ansible-account.yaml
 #
 
-- name: Prepare node for Ansible management
+- name: Add dedicated account for Ansible
   hosts: "{{ target }}"
   become: yes
   gather_facts: no
