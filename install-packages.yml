@@ -1,0 +1,7 @@
+- name: Install packages
+  hosts: all
+  gather_facts: true
+
+  roles:
+    - package-needrestart
+    - packages-common
