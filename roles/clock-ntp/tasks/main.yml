@@ -11,11 +11,11 @@
 
 - name: Check network time synchronization status
   become: true
-  ansible.builtin.shell: timedatectl show -p NTP | cut -d "=" -f 2
+  ansible.builtin.shell: /usr/bin/timedatectl show -p NTP | cut -d "=" -f 2
   changed_when: False
   register: clock_ntp_status
 
 - name: Activate network time synchronization
   when: (ansible_virtualization_type != "lxc") and (clock_ntp_status.stdout == "no")
   become: true
-  ansible.builtin.command: timedatectl set-ntp true
+  ansible.builtin.command: /usr/bin/timedatectl set-ntp true

@@ -3,11 +3,11 @@
 
 - name: Check current time zone
   become: false
-  ansible.builtin.shell: timedatectl show -p Timezone | cut -d "=" -f 2
+  ansible.builtin.shell: /usr/bin/timedatectl show -p Timezone | cut -d "=" -f 2
   changed_when: False
   register: clock_timezone_current
 
 - name: Set new time zone
   when: clock_timezone_current.stdout != clock_timezone
   become: true
-  ansible.builtin.command: timedatectl set-timezone {{ clock_timezone }}
+  ansible.builtin.command: /usr/bin/timedatectl set-timezone {{ clock_timezone }}

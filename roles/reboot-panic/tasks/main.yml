@@ -16,5 +16,5 @@
 - name: Reload sysctl settings
   become: true
   when: panic_reboot_template.changed and ansible_virtualization_type != "lxc"
-  command: sysctl -p /etc/sysctl.d/reboot-panic.conf
+  command: /usr/sbin/sysctl -p /etc/sysctl.d/reboot-panic.conf
   changed_when: false
