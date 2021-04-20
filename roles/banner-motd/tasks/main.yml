@@ -1,5 +1,5 @@
 ---
-# motd tasks main file
+# banner-motd tasks main file
 
 - name: Disable unneeded MOTD fragments
   become: true
