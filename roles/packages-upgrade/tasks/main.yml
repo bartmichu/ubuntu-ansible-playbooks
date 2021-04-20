@@ -3,13 +3,13 @@
 
 - name: Explicitly update repositories cache
   become: true
-  apt:
+  ansible.builtin.apt:
     force_apt_get: yes
     update_cache: yes
 
 - name: Upgrade all installed packages
   become: true
-  apt:
+  ansible.builtin.apt:
     force_apt_get: yes
     upgrade: "yes"
   register: packages_upgrade_result
@@ -22,5 +22,5 @@
 - name: Print a summary
   when: packages_upgrade_result.changed
   become: false
-  debug:
+  ansible.builtin.debug:
     msg: "{{ packages_upgrade_summary }}"
