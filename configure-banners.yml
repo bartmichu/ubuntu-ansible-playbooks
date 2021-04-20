@@ -1,0 +1,7 @@
+- name: Configure login banners and motd
+  hosts: all
+  gather_facts: false
+
+  roles:
+    - banner-issue
+    - banner-motd
