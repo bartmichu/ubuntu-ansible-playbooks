@@ -1,9 +1,9 @@
 ---
-# netplan-examples tasks main file
+# example-netplan tasks main file
 
 - name: Template example config files
   become: true
-  template:
+  ansible.builtin.template:
     src: "{{ item }}.j2"
     dest: /etc/netplan/{{ item }}.example
     force: yes

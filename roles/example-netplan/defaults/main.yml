@@ -1,5 +1,5 @@
 ---
-# netplan-examples defaults main file
+# example-netplan defaults main file
 
 ip_address: "b1.b2.b3.b4"
 ip_gateway: "b1.b2.b3.b4"
