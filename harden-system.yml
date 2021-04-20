@@ -1,0 +1,6 @@
+- name: Harden Ubuntu system
+  hosts: all
+  gather_facts: true
+
+  roles:
+    - hardening-dma-mitigation
