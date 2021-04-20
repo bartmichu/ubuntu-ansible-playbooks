@@ -1,0 +1,14 @@
+---
+# system-reboot-check tasks main file
+
+- name: Check reboot-required flag file
+  become: false
+  ansible.builtin.stat:
+    path: /var/run/reboot-required
+    get_md5: no
+  register: reboot_required_sentinel
+
+- name: Set host facts
+  become: false
+  ansible.builtin.set_fact:
+    reboot_required: "{{ True if reboot_required_sentinel.stat.exists else False }}"

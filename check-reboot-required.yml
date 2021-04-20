@@ -1,0 +1,21 @@
+- name: Check if and which packages require system reboot
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Check if system reboot is required
+      ansible.builtin.include_role:
+        name: system-reboot-check
+
+    - name: Check which packages require system reboot
+      when: reboot_required
+      become: false
+      ansible.builtin.slurp:
+        src: /var/run/reboot-required.pkgs
+      register: reboot_required_packages
+
+    - name: Print summary
+      when: reboot_required
+      become: false
+      ansible.builtin.debug:
+        msg: "System reboot is required by: {{ reboot_required_packages['content'] | b64decode | trim | replace('\n', ', ') }}"
