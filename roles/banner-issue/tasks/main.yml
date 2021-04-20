@@ -3,7 +3,7 @@
 
 - name: Template issue files
   become: true
-  template:
+  ansible.builtin.template:
     src: issue.j2
     dest: /etc/{{ item }}
     force: yes
