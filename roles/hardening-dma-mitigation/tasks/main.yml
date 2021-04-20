@@ -1,9 +1,9 @@
 ---
-# mitigate-dma tasks main file
+# hardening-dma-mitigation tasks main file
 
 - name: Blacklist unwanted kernel modules
   become: true
-  template:
+  ansible.builtin.template:
     src: "blacklist.j2"
     dest: /etc/modprobe.d/blacklist-dma.ansible.conf
     force: yes
@@ -15,7 +15,7 @@
 
 - name: Disable unwanted kernel modules
   become: true
-  template:
+  ansible.builtin.template:
     src: "disable.j2"
     dest: "/etc/modprobe.d/{{ item }}.conf"
     force: yes
@@ -29,5 +29,5 @@
 - name: Update initramfs
   when: dma_mitigate_blacklist.changed or dma_mitigate_disable.changed
   become: true
-  command: update-initramfs -u
+  ansible.builtin.command: /usr/sbin/update-initramfs -u
   changed_when: false

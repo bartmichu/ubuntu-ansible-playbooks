@@ -1,4 +1,4 @@
 ---
-# mitigate-dma vars main file
+# hardening-dma-mitigation vars main file
 
 unwanted_modules: [firewire-core, thunderbolt]
