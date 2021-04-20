@@ -1,7 +1,7 @@
 ---
-# common-packages vars main file
+# packages-common vars main file
 
-common_packages:
+packages_common:
   [
     bash-completion,
     debsums,

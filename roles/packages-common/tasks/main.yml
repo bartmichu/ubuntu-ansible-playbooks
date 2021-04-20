@@ -1,5 +1,5 @@
 ---
-# common-packages tasks mail file
+# packages-common tasks mail file
 
 - name: Explicitly update repositories cache
   become: true
@@ -12,4 +12,4 @@
   apt:
     name: "{{ item }}"
     state: present
-  loop: "{{ common_packages }}"
+  loop: "{{ packages_common }}"
