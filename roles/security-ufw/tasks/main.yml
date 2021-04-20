@@ -1,21 +1,21 @@
 ---
-# ufw tasks main file
+# security-ufw tasks main file
 
 - name: Explicitly update repositories cache
   become: true
-  apt:
+  ansible.builtin.apt:
     force_apt_get: yes
     update_cache: yes
 
 - name: Install package
   become: true
-  apt:
+  ansible.builtin.apt:
     name:
       - ufw
 
 - name: Disable IPV6 support
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/default/ufw
     create: no
     regexp: "^IPV6="
@@ -23,20 +23,20 @@
 
 - name: Set default incoming policy
   become: true
-  command: "ufw default deny incoming"
+  ansible.builtin.command: "/usr/sbin/ufw default deny incoming"
 
 - name: Set default outgoing policy
   become: true
-  command: "ufw default allow outgoing"
+  ansible.builtin.command: "/usr/sbin/ufw default allow outgoing"
 
 - name: Set default routed policy
   become: true
-  command: "ufw default deny routed"
+  ansible.builtin.command: "/usr/sbin/ufw default deny routed"
 
 - name: Allow SSH connections
   become: true
-  command: "ufw allow ssh"
+  ansible.builtin.command: "/usr/sbin/ufw allow in to any port {{ ufw_ssh_port }} proto tcp"
 
 - name: Enable UFW
   become: true
-  shell: "ufw --force enable"
+  ansible.builtin.shell: "/usr/sbin/ufw --force enable"

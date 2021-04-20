@@ -1,0 +1,4 @@
+---
+# security-ufw vars main file
+
+ufw_ssh_port: 22
