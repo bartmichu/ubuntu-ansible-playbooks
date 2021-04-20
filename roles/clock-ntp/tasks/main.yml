@@ -1,0 +1,21 @@
+---
+# clock-ntp tasks main file
+
+- name: Enable and start systemd-timesyncd service
+  when: ansible_virtualization_type != "lxc"
+  become: true
+  ansible.builtin.service:
+    name: systemd-timesyncd
+    enabled: yes
+    state: started
+
+- name: Check network time synchronization status
+  become: true
+  ansible.builtin.shell: timedatectl show -p NTP | cut -d "=" -f 2
+  changed_when: False
+  register: clock_ntp_status
+
+- name: Activate network time synchronization
+  when: (ansible_virtualization_type != "lxc") and (clock_ntp_status.stdout == "no")
+  become: true
+  ansible.builtin.command: timedatectl set-ntp true

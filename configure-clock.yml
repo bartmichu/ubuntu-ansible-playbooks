@@ -1,0 +1,7 @@
+- name: Clock related configuration
+  hosts: all
+  gather_facts: true
+
+  roles:
+    - clock-timezone
+    - clock-ntp
