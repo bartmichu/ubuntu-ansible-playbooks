@@ -3,7 +3,7 @@
 
 - name: Copy my custom userparam files
   become: true
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: /etc/zabbix/zabbix_agentd.d/ansible_{{ item }}
     force: yes
@@ -23,7 +23,7 @@
 
 - name: Copy my custom sudoers files
   become: true
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: /etc/sudoers.d/ansible_{{ item }}
     force: yes
@@ -34,6 +34,6 @@
   loop: [sudoers_zabbix_needrestart]
 
 - name: Restart zabbix-agent
-  service:
+  ansible.builtin.service:
     name: zabbix-agent
     state: restarted

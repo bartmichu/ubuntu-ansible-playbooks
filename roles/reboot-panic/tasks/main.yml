@@ -3,7 +3,7 @@
 
 - name: Template sysctl file
   become: true
-  template:
+  ansible.builtin.template:
     src: sysctl.j2
     dest: /etc/sysctl.d/reboot-panic.conf
     force: yes
@@ -16,5 +16,5 @@
 - name: Reload sysctl settings
   become: true
   when: panic_reboot_template.changed and ansible_virtualization_type != "lxc"
-  command: /usr/sbin/sysctl -p /etc/sysctl.d/reboot-panic.conf
+  ansible.builtin.command: /usr/sbin/sysctl -p /etc/sysctl.d/reboot-panic.conf
   changed_when: false

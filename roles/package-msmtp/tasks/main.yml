@@ -3,13 +3,13 @@
 
 - name: Explicitly update repositories cache
   become: true
-  apt:
+  ansible.builtin.apt:
     force_apt_get: yes
     update_cache: yes
 
 - name: Install packages
   become: true
-  apt:
+  ansible.builtin.apt:
     name:
       - msmtp
       - msmtp-mta
@@ -17,7 +17,7 @@
 
 - name: Template config file
   become: true
-  template:
+  ansible.builtin.template:
     src: msmtprc.j2
     dest: /etc/msmtprc
     force: yes
@@ -28,7 +28,7 @@
 
 - name: Template aliases file
   become: true
-  template:
+  ansible.builtin.template:
     src: msmtp.aliases.j2
     dest: /etc/msmtp.aliases
     force: yes

@@ -3,19 +3,19 @@
 
 - name: Explicitly update repositories cache
   become: true
-  apt:
+  ansible.builtin.apt:
     force_apt_get: yes
     update_cache: yes
 
 - name: Install package
   become: true
-  apt:
+  ansible.builtin.apt:
     name:
       - smartmontools
 
 - name: Template config file
   become: true
-  template:
+  ansible.builtin.template:
     src: smartd.j2
     dest: /etc/smartd.conf
     force: yes

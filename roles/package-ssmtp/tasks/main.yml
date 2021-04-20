@@ -2,21 +2,21 @@
 # package-ssmtp tasks main file
 
 - name: Explicitly update repositories cache
-  become: true
+  ansible.builtin.become: true
   apt:
     force_apt_get: yes
     update_cache: yes
 
 - name: Install packages
   become: true
-  apt:
+  ansible.builtin.apt:
     name:
       - ssmtp
       - mailutils
 
 - name: Template config file
   become: true
-  template:
+  ansible.builtin.template:
     src: ssmtp.conf.j2
     dest: /etc/ssmtp/ssmtp.conf
     force: yes
@@ -27,7 +27,7 @@
 
 - name: Template aliases file
   become: true
-  template:
+  ansible.builtin.template:
     src: revaliases.j2
     dest: /etc/ssmtp/revaliases
     force: yes

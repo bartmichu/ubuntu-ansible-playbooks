@@ -3,7 +3,7 @@
 
 - name: Check if a system reboot is required
   become: false
-  stat:
+  ansible.builtin.stat:
     path: /var/run/reboot-required
     get_md5: no
   register: reboot_required_sentinel
@@ -11,7 +11,7 @@
 - name: Check which packages require a system reboot
   when: reboot_required_sentinel.stat.exists
   become: false
-  slurp:
+  ansible.builtin.slurp:
     src: /var/run/reboot-required.pkgs
   register: reboot_required_packages
 
@@ -23,13 +23,13 @@
 - name: Announce pending reboot
   when: reboot_required_sentinel.stat.exists
   become: false
-  debug:
+  dansible.builtin.ebug:
     msg: "System reboot is {{ reboot_required_status }}."
 
 - name: Reboot system
   when: reboot_system and reboot_required_sentinel.stat.exists
   become: true
-  reboot:
+  ansible.builtin.reboot:
     post_reboot_delay: 0
   register: reboot_required_result
 
@@ -42,5 +42,5 @@
 - name: Confirm system reboot
   when: reboot_required_result.changed and reboot_required_result.rebooted == true
   become: false
-  debug:
+  ansible.builtin.debug:
     msg: "System was successfully rebooted"

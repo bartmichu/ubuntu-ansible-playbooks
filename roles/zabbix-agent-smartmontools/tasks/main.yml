@@ -7,7 +7,7 @@
 
 - name: Copy userparam files
   become: true
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: /etc/zabbix/zabbix_agentd.d/ansible_{{ item }}
     force: yes
@@ -19,7 +19,7 @@
 
 - name: Copy sudoers files
   become: true
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: /etc/sudoers.d/ansible_{{ item }}
     force: yes
@@ -31,13 +31,13 @@
 
 - name: Create scripts directory
   become: true
-  file:
+  ansible.builtin.file:
     path: /etc/zabbix/scripts
     state: directory
 
 - name: Copy discovery script files
   become: true
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: /etc/zabbix/scripts/ansible_{{ item }}
     force: yes
@@ -48,6 +48,6 @@
   loop: [smartctl-disks-discovery.pl]
 
 - name: Restart zabbix-agent
-  service:
+  ansible.builtin.service:
     name: zabbix-agent
     state: restarted

@@ -2,7 +2,7 @@
 # zsh tasks main file
 
 - name: Get users info
-  getent:
+  ansible.builtin.getent:
     database: passwd
 
 - name: Create existing users list
@@ -11,13 +11,13 @@
 
 - name: Explicitly update repositories cache
   become: true
-  apt:
+  ansible.builtin.apt:
     force_apt_get: yes
     update_cache: yes
 
 - name: Install packages
   become: true
-  apt:
+  ansible.builtin.apt:
     name:
       - zsh
       - zsh-autosuggestions
@@ -26,7 +26,7 @@
 
 - name: Copy global config file
   become: true
-  copy:
+  ansible.builtin.copy:
     src: zshrc_global
     dest: /etc/zsh/zshrc
     force: yes
@@ -38,7 +38,7 @@
 - name: Copy local config file
   when: (item in users_existing) and (item != "root")
   become: true
-  copy:
+  ansible.builtin.copy:
     src: zshrc_local
     dest: "/home/{{ item }}/.zshrc"
     force: no
@@ -51,7 +51,7 @@
 - name: Set default shell for selected users
   when: (item in users_existing) and (item != "root")
   become: true
-  user:
+  ansible.builtin.user:
     name: "{{ item }}"
     shell: /usr/bin/zsh
   loop: "{{ zsh_users }}"
