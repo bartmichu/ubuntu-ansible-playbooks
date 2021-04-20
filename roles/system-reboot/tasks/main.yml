@@ -23,7 +23,7 @@
 - name: Announce pending reboot
   when: reboot_required_sentinel.stat.exists
   become: false
-  dansible.builtin.ebug:
+  ansible.builtin.debug:
     msg: "System reboot is {{ reboot_required_status }}."
 
 - name: Reboot system
