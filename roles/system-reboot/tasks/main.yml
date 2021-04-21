@@ -1,46 +1,15 @@
 ---
 # system-reboot tasks main file
 
-- name: Check if a system reboot is required
-  become: false
-  ansible.builtin.stat:
-    path: /var/run/reboot-required
-    get_md5: no
-  register: reboot_required_sentinel
-
-- name: Check which packages require a system reboot
-  when: reboot_required_sentinel.stat.exists
-  become: false
-  ansible.builtin.slurp:
-    src: /var/run/reboot-required.pkgs
-  register: reboot_required_packages
-
-- name: Set host facts
-  become: false
-  ansible.builtin.set_fact:
-    reboot_required_status: "{{ 'pending' if reboot_required_sentinel.stat.exists else 'not needed' }}"
-
-- name: Announce pending reboot
-  when: reboot_required_sentinel.stat.exists
-  become: false
-  ansible.builtin.debug:
-    msg: "System reboot is {{ reboot_required_status }}."
-
 - name: Reboot system
-  when: reboot_system and reboot_required_sentinel.stat.exists
+  when: allow_reboot
   become: true
   ansible.builtin.reboot:
     post_reboot_delay: 0
-  register: reboot_required_result
+  register: reboot_result
 
 - name: Update host facts
-  when: reboot_required_result.changed
+  when: reboot_result.changed
   become: false
   ansible.builtin.set_fact:
-    reboot_required_status: "{{ 'successfull' if reboot_required_result.rebooted == true else 'failed' }}"
-
-- name: Confirm system reboot
-  when: reboot_required_result.changed and reboot_required_result.rebooted == true
-  become: false
-  ansible.builtin.debug:
-    msg: "System was successfully rebooted"
+    reboot_successfull: "{{ True if reboot_result.rebooted == true else False }}"

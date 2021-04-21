@@ -1,0 +1,25 @@
+- name: Reboot system if required
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Check if system reboot is required
+      ansible.builtin.include_role:
+        name: system-reboot-check
+
+    - name: Announce reboot
+      when: reboot_required
+      become: false
+      ansible.builtin.debug:
+        msg: "System reboot is required {{ 'but NOT ALLOWED' if (allow_reboot | default(False)) == False }}"
+
+    - name: Reboot system
+      when: reboot_required and (allow_reboot | default(False))
+      ansible.builtin.include_role:
+        name: system-reboot
+
+    - name: Confirm system reboot
+      when: reboot_required and (reboot_successfull | default(False))
+      become: false
+      ansible.builtin.debug:
+        msg: "System was successfully rebooted"

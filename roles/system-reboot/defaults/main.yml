@@ -1,4 +1,4 @@
 ---
 # system-reboot defaults main file
 
-reboot_system: false
+allow_reboot: false
