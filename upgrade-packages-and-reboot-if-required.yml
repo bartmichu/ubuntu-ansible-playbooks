@@ -1,0 +1,56 @@
+- name: Upgrade all packages and reboot system if required
+  hosts: all
+  gather_facts: true
+
+  # roles:
+  #   - services-restart
+  #   - system-reboot
+
+  tasks:
+    - name: Upgrade packages
+      ansible.builtin.include_role:
+        name: packages-upgrade
+
+    - name: Make sure required packages are installed
+      ansible.builtin.include_role:
+        name: package-needrestart
+
+    - name: Check which services need to be restarted
+      ansible.builtin.include_role:
+        name: services-restart-check
+
+    - name: Set host facts
+      become: false
+      ansible.builtin.set_fact:
+        needrestart_before_restart: "{{ needrestart_list }}"
+
+    - name: Restart services
+      when: needrestart_before_restart | length > 0
+      ansible.builtin.include_role:
+        name: services-restart
+        public: yes
+
+    - name: Check which services still need to be restarted
+      when: needrestart_before_restart | length > 0
+      ansible.builtin.include_role:
+        name: services-restart-check
+
+    - name: Set host facts
+      when: needrestart_before_restart | length > 0
+      become: false
+      ansible.builtin.set_fact:
+        needrestart_after_restart: "{{ needrestart_list }}"
+
+    - name: Check if system reboot is required
+      ansible.builtin.include_role:
+        name: system-reboot-check
+
+    - name: Reboot system
+      when: reboot_required and (allow_reboot | default(False))
+      ansible.builtin.include_role:
+        name: system-reboot
+
+    - name: Print a summary
+      become: true
+      ansible.builtin.debug:
+        msg: "Packages: {{ packages_upgrade_summary }} Services: {{ ((needrestart_before_restart | length) - ((needrestart_after_restart | default([])) | length)) if allow_services_restart else 0 }} / {{ needrestart_before_restart | length }} restarted{{ ' (NOT ALLOWED)' if allow_services_restart == False }}. Reboot: {{ 'not required' if reboot_required == False }}{{ 'NOT ALLOWED' if (reboot_required and (allow_reboot | default(False)) == False) }}{{ 'successfull' if (reboot_required and (reboot_successfull | default(False))) }}{{ 'FAILED' if ((reboot_required and (reboot_allowed | default(False))) and (reboot_successfull | default(False)) == False) }}"
