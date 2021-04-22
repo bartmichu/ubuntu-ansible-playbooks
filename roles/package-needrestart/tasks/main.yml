@@ -1,11 +1,11 @@
 ---
 # package-needrestart tasks main file
 
-- name: Explicitly update repositories cache
-  become: true
-  ansible.builtin.apt:
-    force_apt_get: yes
-    update_cache: yes
+# - name: Explicitly update repositories cache
+#   become: true
+#   ansible.builtin.apt:
+#     force_apt_get: yes
+#     update_cache: yes
 
 - name: Install packages
   become: true
