@@ -1,4 +1,4 @@
 ---
 # services-restart defaults main file
 
-restart_services: true
+allow_services_restart: true

@@ -1,0 +1,13 @@
+---
+# services-restart-check tasks main file
+
+- name: Check which services need to be restarted
+  become: true
+  ansible.builtin.shell: /usr/sbin/needrestart -b -l -r l | /usr/bin/awk '/^NEEDRESTART-SVC/{print $2}'
+  changed_when: false
+  register: needrestart_result
+
+- name: Set host facts
+  become: false
+  ansible.builtin.set_fact:
+    needrestart_list: "{{ (needrestart_result.stdout_lines | default('')) | list }}"

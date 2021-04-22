@@ -1,0 +1,52 @@
+- name: Restart services if needed
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Make sure required packages are installed
+      ansible.builtin.include_role:
+        name: package-needrestart
+
+    - name: Check which services need to be restarted
+      ansible.builtin.include_role:
+        name: services-restart-check
+
+    - name: Set host facts
+      become: false
+      ansible.builtin.set_fact:
+        needrestart_before_restart: "{{ needrestart_list }}"
+
+    - name: List services that need to be restarted
+      when: needrestart_before_restart | length > 0
+      become: false
+      ansible.builtin.debug:
+        msg: "{{ needrestart_before_restart | length }} services to restart: {{ needrestart_before_restart | join(', ') }}"
+
+    - name: Restart services
+      when: needrestart_before_restart | length > 0
+      ansible.builtin.include_role:
+        name: services-restart
+        public: yes
+
+    - name: Check which services still need to be restarted
+      when: needrestart_before_restart | length > 0
+      ansible.builtin.include_role:
+        name: services-restart-check
+
+    - name: Set host facts
+      when: needrestart_before_restart | length > 0
+      become: false
+      ansible.builtin.set_fact:
+        needrestart_after_restart: "{{ needrestart_list }}"
+
+    - name: List services that were not automatically restarted
+      when: needrestart_before_restart | length > 0
+      become: false
+      ansible.builtin.debug:
+        msg: "{{ needrestart_after_restart | length }} services still to restart: {{ needrestart_after_restart | join(', ') }}"
+
+    - name: Print a summary
+      when: needrestart_before_restart | length > 0
+      become: false
+      ansible.builtin.debug:
+        msg: "{{ ((needrestart_before_restart | length) - (needrestart_after_restart | length)) if allow_services_restart else 0 }} / {{ needrestart_before_restart | length }} restarted {{ '(NOT ALLOWED)' if allow_services_restart == False }}"
