@@ -5,6 +5,7 @@ packages_common:
   [
     bash-completion,
     debsums,
+    distro-info,
     gpm,
     htop,
     iftop,
