@@ -1,0 +1,18 @@
+---
+# hardening-umask tasks main file
+
+- name: Set system-wide file mode creation mask
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/login.defs
+    create: no
+    regexp: "^UMASK"
+    line: UMASK 077
+
+- name: Set file mode creation mask for new users
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/default/useradd
+    create: no
+    regexp: "^UMASK"
+    line: UMASK=077

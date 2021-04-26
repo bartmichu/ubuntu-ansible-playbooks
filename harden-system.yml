@@ -3,4 +3,6 @@
   gather_facts: true
 
   roles:
-    - hardening-dma-mitigation
+    # - hardening-dma-mitigation
+    - hardening-private-home
+    - hardening-umask

@@ -1,0 +1,10 @@
+---
+# hardening-private-home tasks main file
+
+- name: Set home mode for new users
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/default/useradd
+    create: no
+    regexp: "^HOME_MODE"
+    line: HOME_MODE=0700
