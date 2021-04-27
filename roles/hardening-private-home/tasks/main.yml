@@ -1,10 +1,30 @@
 ---
 # hardening-private-home tasks main file
 
-- name: Set home mode for new users
+- name: Tweak useradd file
   become: true
   ansible.builtin.lineinfile:
     path: /etc/default/useradd
     create: no
     regexp: "^HOME_MODE"
-    line: HOME_MODE=0700
+    line: HOME_MODE=0750
+
+- name: Tweak login.defs file
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/login.defs
+    create: no
+    regexp: "^HOME_MODE"
+    line: HOME_MODE 0750
+
+- name: Tweak adduser.conf file
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/adduser.conf
+    create: no
+    regexp: "^DIR_MODE"
+    line: DIR_MODE=0750
+
+- name: Set permissions for existing directories
+  become: true
+  ansible.builtin.shell: chmod 750 /home/*
