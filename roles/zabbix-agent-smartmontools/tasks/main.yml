@@ -17,6 +17,7 @@
     owner: root
     group: zabbix
     mode: "0440"
+  register: copy_userparams_result
 
 - name: Configure sudo
   become: true
@@ -48,8 +49,10 @@
     owner: root
     group: zabbix
     mode: "0750"
+  register: copy_script_result
 
 - name: Restart zabbix-agent
+  when: copy_userparams_result.changed or copy_script_result.changed
   ansible.builtin.service:
     name: zabbix-agent
     state: restarted
