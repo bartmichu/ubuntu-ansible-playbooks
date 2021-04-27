@@ -43,7 +43,7 @@
   become: true
   ansible.builtin.copy:
     src: smartctl-disks-discovery.pl
-    dest: /etc/zabbix/scripts/{{ item }}
+    dest: /etc/zabbix/scripts/smartctl-disks-discovery.pl
     force: yes
     backup: false
     owner: root
