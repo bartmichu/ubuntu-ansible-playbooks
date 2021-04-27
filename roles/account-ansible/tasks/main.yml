@@ -32,7 +32,7 @@
 - name: Configure and restart SSH server
   ansible.builtin.template:
     src: sshd.j2
-    dest: /etc/ssh/sshd_config.d/account-ansible.conf
+    dest: /etc/ssh/sshd_config.d/ansible-account.conf
     force: yes
     backup: false
     owner: root
