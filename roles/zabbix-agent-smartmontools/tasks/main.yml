@@ -7,47 +7,47 @@
 # <https://github.com/v-zhuravlev/zbx-smartctl>
 #
 
-- name: Copy userparam files
+- name: Configure user parameters
   become: true
   ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: /etc/zabbix/zabbix_agentd.d/ansible_{{ item }}
+    src: zabbix_smartctl.conf
+    dest: /etc/zabbix/zabbix_agentd.d/zabbix_smartctl.conf
     force: yes
     backup: false
     owner: root
-    group: root
-    mode: "0644"
-  loop: [zabbix_smartctl.conf]
+    group: zabbix
+    mode: "0440"
 
-- name: Copy sudoers files
+- name: Configure sudo
   become: true
   ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: /etc/sudoers.d/ansible_{{ item }}
+    src: sudoers_zabbix_smartctl
+    dest: /etc/sudoers.d/sudoers_zabbix_smartctl
     force: yes
     backup: false
     owner: root
     group: root
     mode: "0440"
-  loop: [sudoers_zabbix_smartctl]
 
 - name: Create scripts directory
   become: true
   ansible.builtin.file:
     path: /etc/zabbix/scripts
     state: directory
+    owner: root
+    group: zabbix
+    mode: "0750"
 
-- name: Copy discovery script files
+- name: Copy discovery script file
   become: true
   ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: /etc/zabbix/scripts/ansible_{{ item }}
+    src: smartctl-disks-discovery.pl
+    dest: /etc/zabbix/scripts/{{ item }}
     force: yes
     backup: false
-    owner: zabbix
+    owner: root
     group: zabbix
-    mode: "0744"
-  loop: [smartctl-disks-discovery.pl]
+    mode: "0750"
 
 - name: Restart zabbix-agent
   ansible.builtin.service:

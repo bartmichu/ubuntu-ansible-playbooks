@@ -1,0 +1,8 @@
+Defaults:zabbix !requiretty
+Defaults!NEEDRESTART_KERNEL !logfile, !syslog, !pam_session
+Defaults!NEEDRESTART_LIBS !logfile, !syslog, !pam_session
+
+Cmnd_Alias NEEDRESTART_KERNEL = /usr/sbin/needrestart -b -r l -k
+Cmnd_Alias NEEDRESTART_LIBS = /usr/sbin/needrestart -b -r l -l
+
+zabbix ALL= (root) NOPASSWD: NEEDRESTART_KERNEL, NEEDRESTART_LIBS

@@ -1,0 +1,29 @@
+---
+# zabbix-agent-ubuntuuserparams tasks main file
+
+- name: Configure user parameters
+  become: true
+  ansible.builtin.copy:
+    src: ubuntu-userparams.conf
+    dest: /etc/zabbix/zabbix_agentd.d/ubuntu-userparams.conf
+    force: yes
+    backup: false
+    owner: root
+    group: zabbix
+    mode: "0440"
+
+- name: Configure sudo
+  become: true
+  ansible.builtin.copy:
+    src: ubuntu-userparams-sudoers
+    dest: /etc/sudoers.d/ubuntu-userparams-sudoers
+    force: yes
+    backup: false
+    owner: root
+    group: root
+    mode: "0440"
+
+- name: Restart zabbix-agent
+  ansible.builtin.service:
+    name: zabbix-agent
+    state: restarted
