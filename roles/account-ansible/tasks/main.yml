@@ -30,6 +30,7 @@
     validate: /usr/sbin/visudo -cf %s
 
 - name: Configure and restart SSH server
+  when: pubkey_result.changed
   ansible.builtin.template:
     src: sshd.j2
     dest: /etc/ssh/sshd_config.d/ansible-account.conf
