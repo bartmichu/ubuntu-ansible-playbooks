@@ -29,4 +29,5 @@
       private: no
 
   roles:
+    - package-sudo
     - account-ansible
