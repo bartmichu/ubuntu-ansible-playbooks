@@ -1,0 +1,8 @@
+- name: Clock related configuration
+  hosts: all
+  gather_facts: true
+
+  roles:
+    - package-smartmontools
+    - zabbix-agent-smartmontools
+    - zabbix-agent-ubuntuuserparams
