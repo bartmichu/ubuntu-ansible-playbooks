@@ -1,7 +1,9 @@
 ---
 # zabbix-agent-smartmontools tasks main file
 
-#
+# Attribution:
+# Some files were pulled from zbx-smartctl project created by
+# Vitaly Zhuravlev and are licensed on GPL v3 terms.
 # <https://github.com/v-zhuravlev/zbx-smartctl>
 #
 
