@@ -1,5 +1,5 @@
 ---
-# clock-ntp tasks main file
+# clock-ntp-client tasks main file
 
 - name: Enable and start systemd-timesyncd service
   when: ansible_virtualization_type != "lxc"

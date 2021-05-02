@@ -4,4 +4,4 @@
 
   roles:
     - clock-timezone
-    - clock-ntp
+    - clock-ntp-client
