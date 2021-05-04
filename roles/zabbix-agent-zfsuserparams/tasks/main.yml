@@ -1,0 +1,20 @@
+---
+# zabbix-agent-zfsuserparams tasks main file
+
+- name: Configure user parameters
+  become: true
+  ansible.builtin.copy:
+    src: zfs-userparams.conf
+    dest: /etc/zabbix/zabbix_agentd.d/zfs-userparams.conf
+    force: yes
+    backup: false
+    owner: root
+    group: zabbix
+    mode: "0440"
+  register: copy_userparams_result
+
+- name: Restart zabbix-agent
+  when: copy_userparams_result.changed
+  ansible.builtin.service:
+    name: zabbix-agent
+    state: restarted

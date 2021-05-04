@@ -6,3 +6,4 @@
     - package-smartmontools
     - zabbix-agent-smartmontools
     - zabbix-agent-ubuntuuserparams
+    - zabbix-agent-zfsuserparams
