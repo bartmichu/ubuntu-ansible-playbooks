@@ -1,4 +1,4 @@
-- name: Clock related configuration
+- name: Configure Zabbix Agent
   hosts: all
   gather_facts: true
 
