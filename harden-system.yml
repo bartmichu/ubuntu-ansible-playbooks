@@ -4,5 +4,6 @@
 
   roles:
     # - hardening-dma-mitigation
+    # - hardening-firewall
     - hardening-private-home
     - hardening-umask

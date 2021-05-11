@@ -1,5 +1,5 @@
 ---
-# security-ufw tasks main file
+# hardening-firewall tasks main file
 
 - name: Explicitly update repositories cache
   become: true
