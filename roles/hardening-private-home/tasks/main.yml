@@ -25,6 +25,6 @@
     regexp: "^DIR_MODE"
     line: DIR_MODE=0750
 
-- name: Set permissions for existing directories
+- name: Fix permissions for existing directories
   become: true
   ansible.builtin.shell: chmod 750 /home/*

@@ -1,7 +1,7 @@
 ---
 # clock-timezone tasks main file
 
-- name: Check current time zone
+- name: Check currently set time zone
   become: false
   ansible.builtin.shell: /usr/bin/timedatectl show -p Timezone | cut -d "=" -f 2
   changed_when: False

@@ -2,4 +2,4 @@
 ##
 
 # Allow dedicated user account to power-off the machine
-{{ poweroff_account }} ALL=NOPASSWD: /usr/bin/systemctl --ignore-inhibitors --no-wall poweroff
+{{ poweroff_account }} ALL=(root) NOPASSWD: /usr/bin/systemctl --ignore-inhibitors --no-wall poweroff

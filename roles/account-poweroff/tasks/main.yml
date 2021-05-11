@@ -42,7 +42,7 @@
     backup: false
     owner: root
     group: root
-    mode: "0440"
+    mode: "0640"
     validate: /usr/sbin/sshd -t -f %s
   notify:
     - restart sshd

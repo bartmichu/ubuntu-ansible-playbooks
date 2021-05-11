@@ -24,7 +24,7 @@
       - zsh-syntax-highlighting
       - zsh-theme-powerlevel9k
 
-- name: Copy global config file
+- name: Copy global configuration file
   become: true
   ansible.builtin.copy:
     src: zshrc_global
@@ -35,7 +35,7 @@
     group: root
     mode: "0644"
 
-- name: Copy local config file
+- name: Copy local configuration file
   when: (item in users_existing) and (item != "root")
   become: true
   ansible.builtin.copy:

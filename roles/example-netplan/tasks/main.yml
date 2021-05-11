@@ -1,7 +1,7 @@
 ---
 # example-netplan tasks main file
 
-- name: Template example config files
+- name: Copy configuration file examples
   become: true
   ansible.builtin.template:
     src: "{{ item }}.j2"

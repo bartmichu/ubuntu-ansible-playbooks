@@ -13,7 +13,7 @@
     name:
       - lynis
 
-- name: Copy config file
+- name: Copy configuration file
   become: true
   ansible.builtin.copy:
     src: custom.prf

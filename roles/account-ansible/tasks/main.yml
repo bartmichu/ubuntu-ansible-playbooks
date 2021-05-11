@@ -1,7 +1,7 @@
 ---
 # account-ansible tasks main file
 
-- name: Add dedicated account
+- name: Add dedicated user account
   ansible.builtin.user:
     name: "{{ new_account_name }}"
     shell: /bin/bash

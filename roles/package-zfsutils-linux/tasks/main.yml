@@ -13,7 +13,7 @@
     name:
       - zfsutils-linux
 
-- name: Copy config file
+- name: Copy cron configuration file
   become: true
   ansible.builtin.copy:
     src: zfsutils-linux

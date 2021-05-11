@@ -1,7 +1,7 @@
 ---
 # banner-issue tasks main file
 
-- name: Template issue files
+- name: Copy issue files
   become: true
   ansible.builtin.template:
     src: issue.j2

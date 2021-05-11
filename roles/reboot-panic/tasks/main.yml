@@ -1,7 +1,7 @@
 ---
 # reboot-panic tasks main file
 
-- name: Template sysctl file
+- name: Copy sysctl configuration file
   become: true
   ansible.builtin.template:
     src: sysctl.j2

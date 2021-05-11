@@ -14,7 +14,7 @@
       - ssmtp
       - mailutils
 
-- name: Template config file
+- name: Copy configuration file
   become: true
   ansible.builtin.template:
     src: ssmtp.conf.j2
@@ -25,7 +25,7 @@
     group: root
     mode: "0600"
 
-- name: Template aliases file
+- name: Copy aliases file
   become: true
   ansible.builtin.template:
     src: revaliases.j2
