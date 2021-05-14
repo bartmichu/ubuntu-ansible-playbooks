@@ -4,4 +4,7 @@
 
   roles:
     - package-needrestart
+    - package-apcupsd
+    - package-lynis
+    - package-smartmontools
     - packages-common
