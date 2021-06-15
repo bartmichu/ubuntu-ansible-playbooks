@@ -1,0 +1,32 @@
+---
+# package-postfix tasks main file
+
+- name: Explicitly update repositories cache
+  become: true
+  ansible.builtin.apt:
+    force_apt_get: yes
+    update_cache: yes
+
+- name: Configure Postfix - hostname
+  become: true
+  ansible.builtin.debconf:
+    name: postfix
+    question: postfix/mailname
+    value: "{{ ansible_hostname }}"
+    vtype: string
+
+- name: Configure Postfix - mailer type
+  become: true
+  ansible.builtin.debconf:
+    name: postfix
+    question: postfix/main_mailer_type
+    value: Internet Site
+    vtype: string
+
+- name: Install packages
+  become: true
+  ansible.builtin.apt:
+    name:
+      - postfix
+      - libsasl2-modules
+      - mailutils

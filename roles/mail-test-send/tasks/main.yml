@@ -1,0 +1,6 @@
+---
+# mail-test-send tasks main file
+
+- name: Send test email
+  become: false
+  ansible.builtin.shell: echo "Mail test" | mail -s "Test email from `hostname`" root

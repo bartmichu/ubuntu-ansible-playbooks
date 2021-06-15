@@ -1,0 +1,50 @@
+---
+# mail-postfix-gmail tasks main file
+
+- name: Configure email account
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/postfix/sasl/sasl_passwd
+    create: yes
+    backup: yes
+    owner: root
+    group: root
+    mode: "0600"
+    regexp: "^[smtp.gmail.com]"
+    line: "[smtp.gmail.com]:587 {{ email_address }}:{{ email_password }}"
+  register: sasl_result
+
+- name: Update Postfix lookup table
+  when: sasl_result.changed
+  become: true
+  ansible.builtin.command: /usr/sbin/postmap /etc/postfix/sasl/sasl_passwd
+
+- name: Fix file permissions if needed
+  when: sasl_result.changed
+  become: true
+  ansible.builtin.file:
+    path: /etc/postfix/sasl/sasl_passwd.db
+    state: file
+    owner: root
+    mode: "0600"
+
+- name: Copy configuration file
+  become: true
+  ansible.builtin.template:
+    src: main.cf.j2
+    dest: /etc/postfix/main.cf
+    force: yes
+    backup: true
+    owner: root
+    group: root
+    mode: "0644"
+
+# - name: Run Postfix check
+#   become: false
+#   ansible.builtin.command: /usr/sbin/postfix check
+
+- name: restart postfix
+  become: true
+  ansible.builtin.service:
+    name: postfix
+    state: restarted

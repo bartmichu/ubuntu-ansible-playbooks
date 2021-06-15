@@ -1,0 +1,9 @@
+- name: Install and configure Postfix
+  hosts: all
+  gather_facts: true
+
+  roles:
+    - package-postfix
+    - mail-postfix-gmail
+    - mail-postfix-aliases
+    - mail-test-send

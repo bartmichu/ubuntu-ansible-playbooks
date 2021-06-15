@@ -1,0 +1,16 @@
+---
+# mail-postfix-aliases defaults main file
+
+- name: Configure root alias
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/aliases
+    create: yes
+    regexp: "^root:"
+    line: "root: {{ email_address }}"
+  register: aliases_result
+
+- name: Rebuild aliases database
+  when: aliases_result.changed
+  become: true
+  ansible.builtin.command: /usr/bin/newaliases

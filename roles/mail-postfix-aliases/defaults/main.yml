@@ -1,0 +1,4 @@
+---
+# mail-postfix-aliases defaults main file
+
+email_address: "account@gmail.com"
