@@ -1,5 +1,7 @@
 ## DO NOT EDIT. This file is Ansible managed and will be overwritten
 ##
 
-#DEVICESCAN -M test -a -o on -S on -s (S/../.././02|L/../../6/03) -m {{ email_address }} -M exec /usr/share/smartmontools/smartd-runner
-DEVICESCAN -a -o on -S on -s (S/../.././02|L/../../6/03) -m {{ email_address }} -M exec /usr/share/smartmontools/smartd-runner
+#DEVICESCAN -M test -a -o on -S on -s (S/../.././02|L/../../6/03) -m {{ email_address }}
+#DEVICESCAN -M test -a -o on -S on -s (S/../.././02|L/../../6/03) -m root
+#DEVICESCAN -a -o on -S on -s (S/../.././02|L/../../6/03) -m {{ email_address }}
+DEVICESCAN -a -o on -S on -s (S/../.././02|L/../../6/03) -m root
