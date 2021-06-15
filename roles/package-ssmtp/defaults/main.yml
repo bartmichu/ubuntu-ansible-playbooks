@@ -1,5 +1,0 @@
----
-# package-ssmtp defaults main file
-
-email_address: "account@gmail.com"
-email_password: "password"
