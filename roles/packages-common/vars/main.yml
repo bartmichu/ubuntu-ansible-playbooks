@@ -9,6 +9,7 @@ packages_common:
     gpm,
     htop,
     iftop,
+    nethogs,
     tmux,
     unattended-upgrades,
     update-notifier-common
