@@ -3,6 +3,7 @@
   gather_facts: true
 
   roles:
+    - package-etckeeper
     - package-needrestart
     - package-apcupsd
     - package-lynis
